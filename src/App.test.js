@@ -3,5 +3,6 @@ import App from "./App";
 
 test("renders the Little Lemon heading", () => {
   render(<App />);
-  expect(screen.getByText("Little Lemon")).toBeInTheDocument();
+  const headingElement = screen.getByText("Little Lemon");
+  expect(headingElement).toBeInTheDocument();
 });

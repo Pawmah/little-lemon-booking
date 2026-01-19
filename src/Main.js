@@ -7,13 +7,13 @@ import HomePage from "./HomePage";
 import BookingPage from "./BookingPage";
 import ConfirmedBooking from "./ConfirmedBooking";
 
-// ✅ Pull times from the API for today
+// ✅ Initialize times using the API for today's date
 export function initializeTimes() {
   const today = new Date();
   return fetchAPI(today);
 }
 
-// ✅ Pull times from the API for the selected date
+// ✅ Update times using the API for the selected date
 export function updateTimes(state, action) {
   return fetchAPI(new Date(action.date));
 }
@@ -23,7 +23,7 @@ function Main() {
 
   const [availableTimes, dispatch] = useReducer(updateTimes, initializeTimes());
 
-  // ✅ submitForm required by the exercise
+  // ✅ Submit booking form data to the API
   function submitForm(formData) {
     const success = submitAPI(formData);
 
