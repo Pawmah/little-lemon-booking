@@ -1,21 +1,36 @@
-import { Routes, Route } from "react-router-dom";
+/* global fetchAPI, submitAPI */
+
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useReducer } from "react";
 
 import HomePage from "./HomePage";
 import BookingPage from "./BookingPage";
+import ConfirmedBooking from "./ConfirmedBooking";
 
-// ✅ Named exports so we can unit test these functions
-export function updateTimes(state, action) {
-  // For now, return the same state regardless of date
-  return state;
+// ✅ Pull times from the API for today
+export function initializeTimes() {
+  const today = new Date();
+  return fetchAPI(today);
 }
 
-export function initializeTimes() {
-  return ["17:00", "18:00", "19:00", "20:00", "21:00"];
+// ✅ Pull times from the API for the selected date
+export function updateTimes(state, action) {
+  return fetchAPI(new Date(action.date));
 }
 
 function Main() {
+  const navigate = useNavigate();
+
   const [availableTimes, dispatch] = useReducer(updateTimes, initializeTimes());
+
+  // ✅ submitForm required by the exercise
+  function submitForm(formData) {
+    const success = submitAPI(formData);
+
+    if (success) {
+      navigate("/confirmed");
+    }
+  }
 
   return (
     <main className="main">
@@ -26,9 +41,15 @@ function Main() {
           <Route
             path="/booking"
             element={
-              <BookingPage availableTimes={availableTimes} dispatch={dispatch} />
+              <BookingPage
+                availableTimes={availableTimes}
+                dispatch={dispatch}
+                submitForm={submitForm}
+              />
             }
           />
+
+          <Route path="/confirmed" element={<ConfirmedBooking />} />
         </Routes>
       </div>
     </main>
