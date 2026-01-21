@@ -1,13 +1,9 @@
-function Chicago() {
+export default function Chicago() {
   return (
-    <section>
-      <h2>About Little Lemon</h2>
-      <p>
-        Little Lemon is a charming neighborhood bistro that serves simple,
-        delicious Mediterranean food in Chicago.
-      </p>
-    </section>
+    <img
+      src="https://images.unsplash.com/photo-1523986371872-9d3ba2e2f5a3?w=900"
+      alt="Little Lemon restaurant food"
+      className="hero-image"
+    />
   );
 }
-
-export default Chicago;

@@ -1,10 +1,8 @@
-function ConfirmedBooking() {
+export default function ConfirmedBooking() {
   return (
-    <section aria-live="polite">
-      <h1>Booking Confirmed!</h1>
-      <p>Your reservation has been successfully submitted.</p>
+    <section>
+      <h1>Booking Confirmed</h1>
+      <p>Your reservation has been confirmed. We’ll see you soon!</p>
     </section>
   );
 }
-
-export default ConfirmedBooking;

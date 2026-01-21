@@ -1,61 +1,75 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-function BookingForm({ availableTimes, dispatch, submitForm }) {
+export default function BookingForm({ availableTimes, dispatch, submitForm }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [guests, setGuests] = useState(1);
   const [occasion, setOccasion] = useState("Birthday");
+
   const [isFormValid, setIsFormValid] = useState(false);
 
-  // ✅ Today's date for min attribute
-  const today = new Date().toISOString().split("T")[0];
+  // ✅ HTML5 "min" needs YYYY-MM-DD format
+  const todayStr = new Date().toISOString().split("T")[0];
 
-  // ✅ React validation (enable/disable submit button)
+  function getFormData() {
+    return {
+      date,
+      time,
+      guests,
+      occasion,
+    };
+  }
+
   useEffect(() => {
     const validDate = date !== "";
     const validTime = time !== "";
-    const validGuests = guests >= 1 && guests <= 10;
+    const validGuests = Number(guests) >= 1 && Number(guests) <= 10;
     const validOccasion = occasion !== "";
 
     setIsFormValid(validDate && validTime && validGuests && validOccasion);
   }, [date, time, guests, occasion]);
 
+  function handleDateChange(e) {
+    const selectedDate = e.target.value;
+    setDate(selectedDate);
+
+    dispatch({ type: "dateChange", date: selectedDate });
+
+    setTime("");
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
+    if (!isFormValid) return;
 
-    submitForm({
-      date: date,
-      time: time,
-      guests: Number(guests),
-      occasion: occasion,
-    });
+    submitForm(getFormData());
   }
 
   return (
     <form
       onSubmit={handleSubmit}
-      style={{ display: "grid", maxWidth: "200px", gap: "20px" }}
-      aria-label="Table reservation form"
+      style={{ display: "grid", maxWidth: "320px", gap: "20px" }}
     >
+      <h2>Book Now</h2>
+
       <label htmlFor="res-date">Choose date</label>
       <input
         type="date"
         id="res-date"
         value={date}
+        onChange={handleDateChange}
         required
-        min={today}
-        onChange={(e) => {
-          setDate(e.target.value);
-          dispatch({ type: "dateChange", date: e.target.value });
-        }}
+        min={todayStr}
+        aria-label="On Click"
       />
 
       <label htmlFor="res-time">Choose time</label>
       <select
         id="res-time"
         value={time}
-        required
         onChange={(e) => setTime(e.target.value)}
+        required
+        aria-label="On Click"
       >
         <option value="">Select a time</option>
         {availableTimes.map((t) => (
@@ -69,20 +83,21 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
       <input
         type="number"
         id="guests"
-        placeholder="1"
+        value={guests}
+        onChange={(e) => setGuests(Number(e.target.value))}
         min="1"
         max="10"
         required
-        value={guests}
-        onChange={(e) => setGuests(e.target.value)}
+        aria-label="On Click"
       />
 
       <label htmlFor="occasion">Occasion</label>
       <select
         id="occasion"
         value={occasion}
-        required
         onChange={(e) => setOccasion(e.target.value)}
+        required
+        aria-label="On Click"
       >
         <option value="Birthday">Birthday</option>
         <option value="Anniversary">Anniversary</option>
@@ -97,6 +112,4 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
     </form>
   );
 }
-
-export default BookingForm;
 

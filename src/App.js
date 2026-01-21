@@ -6,7 +6,7 @@ import Nav from "./Nav";
 import Main from "./Main";
 import Footer from "./Footer";
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <div className="layout">
@@ -19,4 +19,3 @@ function App() {
   );
 }
 
-export default App;

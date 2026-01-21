@@ -1,9 +1,10 @@
 import BookingForm from "./BookingForm";
 
-function BookingPage({ availableTimes, dispatch, submitForm }) {
+export default function BookingPage({ availableTimes, dispatch, submitForm }) {
   return (
     <section>
       <h1>Reserve a Table</h1>
+
       <BookingForm
         availableTimes={availableTimes}
         dispatch={dispatch}
@@ -12,5 +13,3 @@ function BookingPage({ availableTimes, dispatch, submitForm }) {
     </section>
   );
 }
-
-export default BookingPage;
